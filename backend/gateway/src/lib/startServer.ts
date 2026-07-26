@@ -2,7 +2,7 @@ import type { Express } from "express";
 import ENV_SECRETS from "./Secrets.js";
 
 export function startServer(app: Express) {
-  const port = ENV_SECRETS.PORT;
+  const port = ENV_SECRETS.PORT || 3001;
 
   const server = app.listen(port, () => {
     console.log(`App is running on port ${port}`);
