@@ -5,7 +5,7 @@ const app = express() ;
 
 app.use(express.json()) ;
 
-app.get("/" , (req : Request , res:Response)=>{
+app.get("/check" , (req : Request , res:Response)=>{
 
 res.send("testing from auth service")
 

@@ -8,7 +8,7 @@ export async function startServer(app: Express) {
   
   await connectDB() ;
   const server = app.listen(port, () => {
-    console.log(`App is running on port ${port}`);
+    console.log(`Auth Service is running on port ${port}`);
   });
 
   server.on("error", (error) => {

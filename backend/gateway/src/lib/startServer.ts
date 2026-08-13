@@ -5,7 +5,7 @@ export function startServer(app: Express) {
   const port = ENV_SECRETS.PORT || 3001;
 
   const server = app.listen(port, () => {
-    console.log(`App is running on port ${port}`);
+    console.log(`Gateway is running on port ${port}`);
   });
 
   server.on("error", (error) => {
