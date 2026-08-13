@@ -19,26 +19,19 @@ export async function UserSignUp(req: Request, res: Response) {
         });
     };
 
-    const { username, email, password, confirmPassword } = userData.data;
+    const { username, email, password } = userData.data;
 
     try {
 
-        const checkUser = await User.find({
+        const checkUser = await User.findOne({
             email
         });
 
         if (checkUser) {
-            return res.status(400).json({
+            return res.status(409).json({
                 success: false,
-                message: "Email Exits Please Choose Some Other Email"
+                message: "Email already exists. Please use another email."
             })
-        };
-
-        if (password !== confirmPassword) {
-            return res.status(400).json({
-                success: false,
-                message: "Password Does not match"
-            });
         };
 
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
