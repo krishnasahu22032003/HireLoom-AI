@@ -7,6 +7,6 @@ const app = express();
 
 app.use(express.json()) ;
 
-app.use("/api/v1/user/auth", proxy(ENV_SECRETS.AUTH_SERVICE_URL as string) )
+app.use("/api/v1/auth", proxy(ENV_SECRETS.AUTH_SERVICE_URL as string) )
 
 startServer(app) ;
