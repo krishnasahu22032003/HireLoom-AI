@@ -1,11 +1,9 @@
 import express, {  type Request , type Response } from "express" ;
 import startServer from "./lib/startServer.js";
+import EmailRouter from "./routes/email.route.js";
 
 const app = express() ;
 
-app.get("/" , (req:Request , res:Response)=>{
-    res.send("tesing app running of email service")
-}) ;
-
+app.use("/api/v1/emails" , EmailRouter) ;
 
 startServer(app) ; 
