@@ -22,6 +22,21 @@ export async function EmailService(req: Request, res: Response) {
         data
     }) ;
 
+const counts = await emailQueue.getJobCounts(
+    "waiting",
+    "active",
+    "completed",
+    "failed"
+);
+
+console.log("Email job added:", {
+    id: job.id,
+    name: job.name,
+    data: job.data,
+});
+
+console.log("Queue counts:", counts);
+
     return res.status(202).json({
         success:true,
         message:"Task added in the queue",
