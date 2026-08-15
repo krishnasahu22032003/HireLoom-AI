@@ -5,3 +5,4 @@ const emailQueue = new Queue("email-queue" , {
     connection: redis
 }) ; 
 
+export default emailQueue ; 

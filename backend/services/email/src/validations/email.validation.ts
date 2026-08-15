@@ -1,8 +1,9 @@
-import z from "zod" ; 
+import { z } from "zod";
 
-const emailSchema = z
-  .string()
-  .trim()
-  .toLowerCase()
-  .email("Invalid email address")
-  .max(254, "Email cannot exceed 254 characters");
+export const WelcomeEmailSchema = z.object({
+    type: z.literal("WELCOME_EMAIL"),
+    to: z.email(),
+    data: z.object({
+        name: z.string().min(1),
+    }),
+});
