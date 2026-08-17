@@ -1,30 +1,34 @@
-export function WelcomeEmailTemplate(name:string){
-
+export function WelcomeEmailTemplate(name: string) {
   return `
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="x-apple-disable-message-reformatting" />
-  <meta name="color-scheme" content="light dark" />
-  <meta name="supported-color-schemes" content="light dark" />
+  <meta name="color-scheme" content="light" />
+  <meta name="supported-color-schemes" content="light" />
 
   <title>Welcome to HireLoom AI</title>
 
   <style>
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      background-color: #fbfbfc;
+    }
+
     body {
-      margin: 0;
-      padding: 0;
-      background-color: #f4f6f8;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Helvetica, Arial, sans-serif;
-      color: #17202a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1a1a1a;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
     table {
-      border-spacing: 0;
       border-collapse: collapse;
+      border-spacing: 0;
     }
 
     img {
@@ -37,206 +41,259 @@ export function WelcomeEmailTemplate(name:string){
       text-decoration: none;
     }
 
-    .wrapper {
+    .page {
       width: 100%;
-      background-color: #f4f6f8;
-      padding: 40px 16px;
+      background-color: #fbfbfc;
+      padding: 64px 24px;
     }
 
-    .container {
+    .email {
       width: 100%;
       max-width: 640px;
       margin: 0 auto;
-      background: #ffffff;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid #e8ebef;
+      background-color: #ffffff;
     }
 
     .header {
-      padding: 28px 36px;
-      border-bottom: 1px solid #edf0f2;
+      padding: 0 8px 40px;
+      text-align: center;
     }
 
-    .logo {
-      font-size: 21px;
+    .brand {
+      font-size: 15px;
+      line-height: 20px;
       font-weight: 700;
-      letter-spacing: -0.5px;
-      color: #111827;
+      letter-spacing: -0.2px;
+      color: #1a1a1a;
     }
 
-    .logo span {
-      color: #635bff;
+    .brand-dot {
+      color: #7c6ff0;
     }
 
     .hero {
-      padding: 52px 36px 42px;
+      padding: 0 24px;
+      text-align: center;
     }
 
-    .eyebrow {
+    .hero-badge {
       display: inline-block;
-      background: #f0efff;
-      color: #5b52d6;
-      padding: 7px 12px;
+      padding: 6px 14px;
+      background-color: #f5f4ff;
       border-radius: 999px;
+      color: #7c6ff0;
       font-size: 12px;
+      line-height: 16px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .hero-title {
+      margin: 28px 0 0;
+      color: #17171a;
+      font-size: 34px;
+      line-height: 1.25;
       font-weight: 700;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-      margin-bottom: 20px;
+      letter-spacing: -1px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 40px;
-      line-height: 1.12;
-      letter-spacing: -1.5px;
-      color: #111827;
+    .hero-title-accent {
+      color: #7c6ff0;
     }
 
-    .hero-text {
-      margin: 18px 0 0;
+    .hero-description {
+      max-width: 420px;
+      margin: 18px auto 0;
+      color: #71717a;
       font-size: 16px;
-      line-height: 1.7;
-      color: #667085;
+      line-height: 26px;
+      font-weight: 400;
     }
 
-    .button-wrapper {
-      margin-top: 30px;
+    .hero-button-wrapper {
+      padding-top: 32px;
     }
 
-    .button {
+    .hero-button {
       display: inline-block;
-      background: #111827;
+      background-color: #7c6ff0;
       color: #ffffff !important;
-      padding: 14px 23px;
+      padding: 14px 32px;
       border-radius: 10px;
       font-size: 14px;
-      font-weight: 700;
+      line-height: 20px;
+      font-weight: 600;
+      letter-spacing: -0.1px;
     }
 
-    .section {
-      padding: 0 36px 40px;
+    .divider-row {
+      padding: 56px 24px 0;
+    }
+
+    .divider {
+      height: 1px;
+      background-color: #ececef;
+    }
+
+    .features-section {
+      padding: 56px 24px 0;
     }
 
     .section-title {
-      margin: 0 0 18px;
-      font-size: 18px;
+      margin: 0;
+      color: #17171a;
+      font-size: 20px;
+      line-height: 28px;
       font-weight: 700;
-      color: #111827;
+      letter-spacing: -0.4px;
+      text-align: center;
     }
 
-    .feature-table {
+    .feature-grid {
       width: 100%;
+      margin-top: 40px;
     }
 
-    .feature {
-      padding: 18px 0;
-      border-top: 1px solid #edf0f2;
+    .feature-cell {
+      width: 33.333%;
+      padding: 0 14px;
+      vertical-align: top;
+      text-align: center;
     }
 
-    .icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 11px;
-      background: #f3f4f6;
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #f5f4ff;
+      border-radius: 12px;
+      margin: 0 auto;
+    }
+
+    .feature-icon-content {
+      width: 40px;
+      height: 40px;
       text-align: center;
       vertical-align: middle;
-      font-size: 19px;
-    }
-
-    .feature-content {
-      padding-left: 14px;
-      vertical-align: middle;
+      font-size: 17px;
+      line-height: 40px;
     }
 
     .feature-title {
-      margin: 0 0 4px;
+      margin: 18px 0 0;
+      color: #17171a;
       font-size: 14px;
-      font-weight: 700;
-      color: #1d2939;
+      line-height: 20px;
+      font-weight: 600;
+      letter-spacing: -0.1px;
     }
 
     .feature-description {
-      margin: 0;
-      font-size: 13px;
-      line-height: 1.55;
-      color: #667085;
+      margin: 6px 0 0;
+      color: #8b8b93;
+      font-size: 12.5px;
+      line-height: 19px;
     }
 
-    .callout {
-      margin: 4px 36px 40px;
-      padding: 24px;
-      background: #f7f7ff;
-      border: 1px solid #e6e4ff;
-      border-radius: 14px;
-    }
-
-    .callout-title {
-      margin: 0 0 7px;
-      font-size: 15px;
-      font-weight: 700;
-      color: #29235c;
-    }
-
-    .callout-text {
-      margin: 0;
-      font-size: 13px;
-      line-height: 1.6;
-      color: #625f7a;
-    }
-
-    .footer {
-      padding: 28px 36px;
-      background: #fafafa;
-      border-top: 1px solid #edf0f2;
+    .quote-section {
+      padding: 56px 40px 0;
       text-align: center;
     }
 
-    .footer-text {
+    .quote-mark {
       margin: 0;
-      font-size: 12px;
-      line-height: 1.6;
-      color: #98a2b3;
+      color: #d8d5f8;
+      font-size: 40px;
+      line-height: 20px;
+      font-weight: 700;
+    }
+
+    .quote-text {
+      max-width: 440px;
+      margin: 12px auto 0;
+      color: #3f3f46;
+      font-size: 17px;
+      line-height: 27px;
+      font-weight: 500;
+      letter-spacing: -0.2px;
+    }
+
+    .footer {
+      padding: 56px 24px 8px;
+      text-align: center;
     }
 
     .footer-links {
-      margin-top: 10px;
+      padding-bottom: 16px;
     }
 
-    .footer-links a {
-      color: #667085;
+    .footer-link {
+      color: #8b8b93 !important;
       font-size: 12px;
-      margin: 0 7px;
+      line-height: 18px;
+      font-weight: 500;
+    }
+
+    .footer-separator {
+      padding: 0 10px;
+      color: #dcdce0;
+      font-size: 12px;
+    }
+
+    .copyright {
+      margin: 0;
+      color: #b4b4bb;
+      font-size: 11.5px;
+      line-height: 18px;
     }
 
     @media only screen and (max-width: 600px) {
-      .wrapper {
-        padding: 16px 10px;
-      }
-
-      .header {
-        padding: 22px 22px;
+      .page {
+        padding: 40px 16px;
       }
 
       .hero {
-        padding: 38px 22px 32px;
+        padding: 0 8px;
       }
 
-      .section {
-        padding: 0 22px 32px;
+      .hero-title {
+        font-size: 28px;
+        letter-spacing: -0.6px;
       }
 
-      .callout {
-        margin: 0 22px 32px;
+      .hero-description {
+        font-size: 15px;
+        line-height: 24px;
+      }
+
+      .divider-row {
+        padding: 40px 16px 0;
+      }
+
+      .features-section {
+        padding: 40px 8px 0;
+      }
+
+      .feature-grid {
+        margin-top: 30px;
+      }
+
+      .feature-cell {
+        width: 100%;
+        display: block;
+        padding: 0 0 28px;
+      }
+
+      .quote-section {
+        padding: 40px 16px 0;
+      }
+
+      .quote-text {
+        font-size: 16px;
+        line-height: 25px;
       }
 
       .footer {
-        padding: 24px 22px;
-      }
-
-      h1 {
-        font-size: 32px;
+        padding: 40px 16px 8px;
       }
     }
   </style>
@@ -244,252 +301,112 @@ export function WelcomeEmailTemplate(name:string){
 
 <body>
 
-  <table role="presentation" width="100%">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
-      <td>
+      <td align="center">
 
-        <div class="wrapper">
+        <div class="page">
 
-          <table
-            role="presentation"
-            class="container"
-            align="center"
-          >
+          <table role="presentation" class="email" width="100%" cellpadding="0" cellspacing="0" border="0">
 
-            <!-- HEADER -->
             <tr>
               <td class="header">
-
-                <div class="logo">
-                  HireLoom<span>AI</span>
-                </div>
-
+                <div class="brand">HireLoom<span class="brand-dot">AI</span></div>
               </td>
             </tr>
 
-
-            <!-- HERO -->
             <tr>
               <td class="hero">
 
-                <div class="eyebrow">
-                  Welcome to HireLoom AI
-                </div>
+                <span class="hero-badge">Your career, upgraded</span>
 
-                <h1>
-                  Welcome, ${name}.
+                <h1 class="hero-title">
+                  Welcome to<br />
+                  <span class="hero-title-accent">HireLoom AI</span>
                 </h1>
 
-                <p class="hero-text">
-                  Your AI-powered interview preparation journey starts here.
-                  Practice smarter, build a stronger resume, and turn your
-                  preparation into real career progress.
+                <p class="hero-description">
+                  Hi ${name}, your personal AI career workspace is ready.
+                  Prepare for interviews, build a stronger resume, and
+                  move forward with confidence.
                 </p>
 
-                <div class="button-wrapper">
-
-                  <a
-                    href="https://hireloomai.krishnastack.com"
-                    class="button"
-                  >
-                    Open HireLoom AI →
-                  </a>
-
+                <div class="hero-button-wrapper">
+                  <a href="https://hireloomai.krishnastack.com" class="hero-button">Start preparing</a>
                 </div>
 
               </td>
             </tr>
 
-
-            <!-- FEATURES -->
             <tr>
-              <td class="section">
+              <td class="divider-row">
+                <div class="divider"></div>
+              </td>
+            </tr>
 
-                <h2 class="section-title">
-                  Everything you need to prepare better
-                </h2>
+            <tr>
+              <td class="features-section">
 
-                <table
-                  role="presentation"
-                  class="feature-table"
-                >
+                <h2 class="section-title">Everything you need, in one place</h2>
 
-                  <!-- Feature 1 -->
+                <table role="presentation" class="feature-grid" width="100%" cellpadding="0" cellspacing="0" border="0">
                   <tr>
-                    <td class="feature">
 
-                      <table role="presentation">
+                    <td class="feature-cell">
+                      <table role="presentation" width="40" height="40" cellpadding="0" cellspacing="0" border="0" align="center" class="feature-icon">
                         <tr>
-
-                          <td class="icon">
-                            🎯
-                          </td>
-
-                          <td class="feature-content">
-
-                            <p class="feature-title">
-                              AI-Powered Interviews
-                            </p>
-
-                            <p class="feature-description">
-                              Practice realistic interviews with AI-generated
-                              questions and receive actionable feedback on
-                              your answers.
-                            </p>
-
-                          </td>
-
+                          <td class="feature-icon-content" align="center">🎯</td>
                         </tr>
                       </table>
-
+                      <p class="feature-title">Mock Interviews</p>
+                      <p class="feature-description">Practice and get real feedback</p>
                     </td>
-                  </tr>
 
-                  <tr>
-                    <td class="feature">
-
-                      <table role="presentation">
+                    <td class="feature-cell">
+                      <table role="presentation" width="40" height="40" cellpadding="0" cellspacing="0" border="0" align="center" class="feature-icon">
                         <tr>
-
-                          <td class="icon">
-                            📄
-                          </td>
-
-                          <td class="feature-content">
-
-                            <p class="feature-title">
-                              AI Resume Builder
-                            </p>
-
-                            <p class="feature-description">
-                              Create polished, job-ready resumes tailored
-                              around your experience and career goals.
-                            </p>
-
-                          </td>
-
+                          <td class="feature-icon-content" align="center">✦</td>
                         </tr>
                       </table>
-
+                      <p class="feature-title">Resume Builder</p>
+                      <p class="feature-description">Craft a polished, sharp resume</p>
                     </td>
-                  </tr>
 
-                  <tr>
-                    <td class="feature">
-
-                      <table role="presentation">
+                    <td class="feature-cell">
+                      <table role="presentation" width="40" height="40" cellpadding="0" cellspacing="0" border="0" align="center" class="feature-icon">
                         <tr>
-
-                          <td class="icon">
-                            🧭
-                          </td>
-
-                          <td class="feature-content">
-
-                            <p class="feature-title">
-                              Personalized Roadmaps
-                            </p>
-
-                            <p class="feature-description">
-                              Get a structured learning roadmap that helps
-                              you understand what to learn, practice, and
-                              improve next.
-                            </p>
-
-                          </td>
-
+                          <td class="feature-icon-content" align="center">◇</td>
                         </tr>
                       </table>
-
+                      <p class="feature-title">Career Roadmaps</p>
+                      <p class="feature-description">A clear plan for your goals</p>
                     </td>
+
                   </tr>
-
-                  <tr>
-                    <td class="feature">
-
-                      <table role="presentation">
-                        <tr>
-
-                          <td class="icon">
-                            📈
-                          </td>
-
-                          <td class="feature-content">
-
-                            <p class="feature-title">
-                              Interview History & Progress
-                            </p>
-
-                            <p class="feature-description">
-                              Track your previous interviews, review feedback,
-                              and see how your performance improves over time.
-                            </p>
-
-                          </td>
-
-                        </tr>
-                      </table>
-
-                    </td>
-                  </tr>
-
                 </table>
 
               </td>
             </tr>
 
             <tr>
-              <td>
-
-                <div class="callout">
-
-                  <p class="callout-title">
-                    Your next interview starts with preparation.
-                  </p>
-
-                  <p class="callout-text">
-                    Don't just practice more. Practice with purpose.
-                    Use HireLoom AI to identify your weak areas, sharpen
-                    your answers, and build the confidence to perform
-                    when it matters.
-                  </p>
-
-                </div>
-
+              <td class="quote-section">
+                <p class="quote-mark">"</p>
+                <p class="quote-text">
+                  Don't just prepare for interviews — prepare to perform.
+                </p>
               </td>
             </tr>
 
             <tr>
               <td class="footer">
-
-                <p class="footer-text">
-                  You're receiving this email because you created an
-                  account with HireLoom AI.
-                </p>
-
                 <div class="footer-links">
-
-                  <a href="https://hireloomai.krishnastack.com">
-                    HireLoom AI
-                  </a>
-
-                  <a href="https://hireloomai.krishnastack.com/privacy">
-                    Privacy
-                  </a>
-
-                  <a href="https://hireloomai.krishnastack.com/contact">
-                    Contact
-                  </a>
-
+                  <a href="https://hireloomai.krishnastack.com" class="footer-link">Visit HireLoom</a>
+                  <span class="footer-separator">·</span>
+                  <a href="https://hireloomai.krishnastack.com/privacy" class="footer-link">Privacy</a>
+                  <span class="footer-separator">·</span>
+                  <a href="https://hireloomai.krishnastack.com/contact" class="footer-link">Contact</a>
                 </div>
-
-                <p
-                  class="footer-text"
-                  style="margin-top: 14px;"
-                >
-                  © 2026 HireLoom AI. All rights reserved.
-                </p>
-
+                <p class="copyright">© 2026 HireLoom AI</p>
               </td>
             </tr>
 
@@ -503,5 +420,5 @@ export function WelcomeEmailTemplate(name:string){
 
 </body>
 </html>
-  `
+`;
 }
