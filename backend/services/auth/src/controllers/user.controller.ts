@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import User from "../models/user.model.js";
 import { signupSchema } from "../validation/userValidation.js";
 import bcrypt from "bcrypt";
+import ENV_SECRETS from "../lib/Secrets.js";
 
 // 1. signup 2. login 3. logout using jwt these i want 
 
@@ -48,6 +49,20 @@ export async function UserSignUp(req: Request, res: Response) {
                 message: "User not created"
             });
         };
+
+     await fetch(ENV_SECRETS.EMAIL_SERVICE_URL as string ,{
+        method:"POST",
+        headers:{
+             "Content-Type": "application/json"
+        },
+        body:JSON.stringify({
+            type:"WELCOME_EMAIL",
+            to:user.email,
+            data:{
+                name:user.username
+            }
+        })
+     });
 
         return res.status(201).json({
             success: true,
