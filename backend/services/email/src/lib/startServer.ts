@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import ENV_SECRETS from "./SECRETS.js";
+import "../workers/email.worker.js"
 
 export default function startServer(app: Express) {
 

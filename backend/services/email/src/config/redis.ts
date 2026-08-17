@@ -2,7 +2,7 @@ import {Redis} from "ioredis";
 import ENV_SECRETS from "../lib/SECRETS.js";
 
     
-const redis = new Redis(ENV_SECRETS.REDIS_SECRET as string)
+const redis = new Redis(ENV_SECRETS.REDIS_SECRET as string , {maxRetriesPerRequest:null})
 
 redis.on("connect" , ()=>{
     console.log("connect to redis db")
