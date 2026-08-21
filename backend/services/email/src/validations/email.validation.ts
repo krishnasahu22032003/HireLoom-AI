@@ -7,3 +7,6 @@ export const WelcomeEmailSchema = z.object({
         name: z.string().min(1),
     }),
 });
+
+
+
