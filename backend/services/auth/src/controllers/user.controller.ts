@@ -173,7 +173,44 @@ export async function UserSignOut(req: Request, res: Response) {
 
 export async function GetUserDetails(req: Request, res: Response){
 
-if(req.cookies)
+    if(!req.userId){
 
-}
+        return res.status(400).json({
+            success:false, 
+            message:"Invalid User"
+        }) ;
+    } ;
+
+    try{
+
+         const user = await User.findById(req.userId) ;
+
+         if(!user){
+
+            return res.status(400).json({
+                success:false,
+                message:"User Does Not Found"
+            }) ;
+         }; 
+
+         return res.status(200).json({
+            success:true , 
+            message:"User Details Fetched",
+            data:{
+                name:user.username , 
+                email:user.email
+            } 
+         });
+
+    }catch(error){
+
+         console.error(error) ;
+
+        return res.status(500).json({
+            success:false,
+            message:"Internal Server Error"
+        });
+    };
+
+};
 
