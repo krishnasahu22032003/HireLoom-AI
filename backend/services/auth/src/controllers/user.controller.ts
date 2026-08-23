@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import User from "../models/user.model.js";
-import { signupSchema } from "../validation/userValidation.js";
+import { signinSchema, signupSchema } from "../validation/userValidation.js";
 import bcrypt from "bcrypt";
 import ENV_SECRETS from "../lib/Secrets.js";
 
@@ -81,5 +81,55 @@ export async function UserSignUp(req: Request, res: Response) {
         });
     };
 };
+
+export async function UserSignIn(req: Request, res: Response){
+
+const parsedData = signinSchema.safeParse(req.body) ;
+
+if(!parsedData.success){
+    return res.status(400).json({
+        success:false, 
+        message:"Invalid Credentials",
+        error:parsedData.error.flatten()
+    });
+};
+
+const {email , password } = parsedData.data ;
+
+try{
+
+    const checkUser = await User.findOne({
+        email
+    });
+
+    if(!checkUser){
+        return res.status(400).json({
+            success:false , 
+            message :"User does not exists please signup"
+        });
+    };
+
+    const comparePassword = await bcrypt.compare(checkUser.password as string , password) ;
+
+    if(!comparePassword){
+        return res.status(400).json({
+            success:false ,
+            message:"Invalid Password"
+        });
+    };
+
+   
+
+
+
+
+
+}
+
+
+
+
+
+}
 
 
