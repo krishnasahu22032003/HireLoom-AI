@@ -52,19 +52,19 @@ export async function UserSignUp(req: Request, res: Response) {
             });
         };
 
-     await fetch(ENV_SECRETS.EMAIL_SERVICE_URL as string ,{
-        method:"POST",
-        headers:{
-             "Content-Type": "application/json"
-        },
-        body:JSON.stringify({
-            type:"WELCOME_EMAIL",
-            to:user.email,
-            data:{
-                name:user.username
-            }
-        })
-     });
+        await fetch(ENV_SECRETS.EMAIL_SERVICE_URL as string, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                type: "WELCOME_EMAIL",
+                to: user.email,
+                data: {
+                    name: user.username
+                }
+            })
+        });
 
         return res.status(201).json({
             success: true,
@@ -84,67 +84,90 @@ export async function UserSignUp(req: Request, res: Response) {
     };
 };
 
-export async function UserSignIn(req: Request, res: Response){
+export async function UserSignIn(req: Request, res: Response) {
 
-const parsedData = signinSchema.safeParse(req.body) ;
+    const parsedData = signinSchema.safeParse(req.body);
 
-if(!parsedData.success){
-    return res.status(400).json({
-        success:false, 
-        message:"Invalid Credentials",
-        error:parsedData.error.flatten()
-    });
-};
-
-const {email , password } = parsedData.data ;
-
-try{
-
-    const checkUser = await User.findOne({
-        email
-    });
-
-    if(!checkUser){
-        return res.status(401).json({
-            success:false , 
-            message: "Invalid email or password"
+    if (!parsedData.success) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid Credentials",
+            error: parsedData.error.flatten()
         });
     };
 
-    const comparePassword = await bcrypt.compare(password , checkUser.password as string) ;
+    const { email, password } = parsedData.data;
 
-    if(!comparePassword){
-        return res.status(401).json({
-            success:false ,
-           message: "Invalid email or password"
+    try {
+
+        const checkUser = await User.findOne({
+            email
+        });
+
+        if (!checkUser) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid email or password"
+            });
+        };
+
+        const comparePassword = await bcrypt.compare(password, checkUser.password as string);
+
+        if (!comparePassword) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid email or password"
+            });
+        };
+
+        const token = generateToken(checkUser.id);
+
+        res.cookie(AUTH_COOKIE_NAME, token, AUTH_COOKIE_OPTIONS);
+
+        return res.status(200).json({
+
+            success: true,
+            message: "User SignIn Success",
+            data: {
+                name: checkUser.username,
+                email: checkUser.email
+            }
+
+        });
+
+    } catch (error) {
+
+        console.error(error)
+
+        return res.status(500).json({
+
+            success: false,
+            message: "Internal server error"
         });
     };
 
-   const token = generateToken(checkUser.id) ;
-
-   res.cookie(AUTH_COOKIE_NAME , token , AUTH_COOKIE_OPTIONS) ;
-
-   return res.status(200).json({
-    
-    success:true , 
-    message:"User SignIn Success",
-    data:{
-        name:checkUser.username , 
-        email:checkUser.email
-    }
-
-   });
-
-}catch(error){
-    
-console.error(error)
-
-    return res.status(500).json({
-
-        success:false,
-        message:"Internal server error"
-    });
 };
+
+export async function UserSignOut(req: Request, res: Response) {
+
+    try {
+
+        res.clearCookie(AUTH_COOKIE_NAME, AUTH_COOKIE_OPTIONS);
+
+        return res.status(200).json({
+            success: true,
+            message: "User SingOut Success"
+        });
+
+    } catch (error) {
+
+        console.log(error)
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+    };
 
 };
 
