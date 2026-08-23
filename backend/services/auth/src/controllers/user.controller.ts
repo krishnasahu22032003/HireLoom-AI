@@ -171,4 +171,9 @@ export async function UserSignOut(req: Request, res: Response) {
 
 };
 
+export async function GetUserDetails(req: Request, res: Response){
+
+if(req.cookies)
+
+}
 
