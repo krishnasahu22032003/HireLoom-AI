@@ -1,6 +1,10 @@
 import jwt from "jsonwebtoken" ;
 import ENV_SECRETS from "./Secrets.js";
 
+interface jwtPayload{
+    userId : string 
+}
+
 export function generateToken(userId: string){
 
 return jwt.sign({
@@ -13,3 +17,8 @@ ENV_SECRETS.JWT_SECRET as string ,
 
 };
 
+export function verifyToken(token : string ){
+
+return jwt.verify(token , ENV_SECRETS.JWT_SECRET as string) as jwtPayload ; 
+ 
+} ;

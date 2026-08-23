@@ -3,6 +3,8 @@ import User from "../models/user.model.js";
 import { signinSchema, signupSchema } from "../validation/userValidation.js";
 import bcrypt from "bcrypt";
 import ENV_SECRETS from "../lib/Secrets.js";
+import { generateToken } from "../lib/jwt.js";
+import { AUTH_COOKIE_NAME, AUTH_COOKIE_OPTIONS } from "../config/cookie.js";
 
 // 1. signup 2. login 3. logout using jwt these i want 
 
@@ -103,33 +105,47 @@ try{
     });
 
     if(!checkUser){
-        return res.status(400).json({
+        return res.status(401).json({
             success:false , 
-            message :"User does not exists please signup"
+            message: "Invalid email or password"
         });
     };
 
-    const comparePassword = await bcrypt.compare(checkUser.password as string , password) ;
+    const comparePassword = await bcrypt.compare(password , checkUser.password as string) ;
 
     if(!comparePassword){
-        return res.status(400).json({
+        return res.status(401).json({
             success:false ,
-            message:"Invalid Password"
+           message: "Invalid email or password"
         });
     };
 
-   
+   const token = generateToken(checkUser.id) ;
 
+   res.cookie(AUTH_COOKIE_NAME , token , AUTH_COOKIE_OPTIONS) ;
 
+   return res.status(200).json({
+    
+    success:true , 
+    message:"User SignIn Success",
+    data:{
+        name:checkUser.username , 
+        email:checkUser.email
+    }
 
+   });
 
+}catch(error){
+    
+console.error(error)
 
-}
+    return res.status(500).json({
 
+        success:false,
+        message:"Internal server error"
+    });
+};
 
-
-
-
-}
+};
 
 
