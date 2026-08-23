@@ -67,3 +67,4 @@ export const firebaseAuthSchema = z
 export type SignupInput = z.infer<typeof signupSchema>;
 export type SigninInput = z.infer<typeof signinSchema>;
 export type FirebaseAuthInput = z.infer<typeof firebaseAuthSchema>;
+
