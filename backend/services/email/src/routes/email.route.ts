@@ -1,5 +1,5 @@
 import express from "express" ;
-import { EmailService, OtpEmail } from "../controllers/emai.l.controller.js";
+import { EmailService, OtpEmail } from "../controllers/email.controller.js";
 
 const EmailRouter = express.Router() ; 
 
