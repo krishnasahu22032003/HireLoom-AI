@@ -6,6 +6,7 @@ import ENV_SECRETS from "../lib/Secrets.js";
 import { generateToken } from "../lib/jwt.js";
 import { AUTH_COOKIE_NAME, AUTH_COOKIE_OPTIONS } from "../config/cookie.js";
 import generaeteOtp from "../lib/generateOtp.js";
+import redis from "../config/connectRedis.js";
 
 // 1. signup 2. login 3. logout using jwt these i want 
 
@@ -31,7 +32,7 @@ export async function UserSignUp(req: Request, res: Response) {
             email
         });
 
-        if (checkUser) {
+        if (checkUser && checkUser.isEmailVerified) {
             return res.status(409).json({
                 success: false,
                 message: "Email already exists. Please use another email."
@@ -44,7 +45,7 @@ export async function UserSignUp(req: Request, res: Response) {
             username,
             email,
             password: hashedPassword,
-            isEmailVerified:false
+            isEmailVerified: false
         });
 
         if (!user) {
@@ -54,24 +55,39 @@ export async function UserSignUp(req: Request, res: Response) {
             });
         };
 
-    const userOtp = generaeteOtp() ;
+        const userOtp = generaeteOtp();
+        const otpHash = await bcrypt.hash(userOtp, SALT_ROUNDS);
 
-        await fetch(ENV_SECRETS.OTP_SERVICE_URL as string , {
-            method:"POST", 
-            headers:{
-                "Content-Type":"application/json"
+        await redis.set(
+
+            `otp:${user.email}`,
+            otpHash,
+            "EX", 300
+
+        )
+
+        const emailResponse = await fetch(ENV_SECRETS.OTP_SERVICE_URL as string, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
             },
-            body:JSON.stringify({
-                type:"SEND_OTP",
-                to:user.email , 
-                data:{
-                    name:user.username , 
-                    otp:userOtp
+            body: JSON.stringify({
+                type: "SEND_OTP",
+                to: user.email,
+                data: {
+                    name: user.username,
+                    otp: userOtp
                 }
             })
-        })
+        });
 
-        return res.status(201).json({
+        if (!emailResponse.ok) {
+            throw new Error(
+                `OTP service failed: ${emailResponse.status}`
+            );
+        };
+
+        return res.status(202).json({
             success: true,
             message: "OTP Email Sent Successfully",
             data: {
@@ -176,46 +192,54 @@ export async function UserSignOut(req: Request, res: Response) {
 
 };
 
-export async function GetUserDetails(req: Request, res: Response){
+export async function GetUserDetails(req: Request, res: Response) {
 
-    if(!req.userId){
+    if (!req.userId) {
 
         return res.status(400).json({
-            success:false, 
-            message:"Invalid User"
-        }) ;
-    } ;
+            success: false,
+            message: "Invalid User"
+        });
+    };
 
-    try{
+    try {
 
-         const user = await User.findById(req.userId) ;
+        const user = await User.findById(req.userId);
 
-         if(!user){
+        if (!user) {
 
             return res.status(400).json({
-                success:false,
-                message:"User Does Not Found"
-            }) ;
-         }; 
+                success: false,
+                message: "User Does Not Found"
+            });
+        };
 
-         return res.status(200).json({
-            success:true , 
-            message:"User Details Fetched",
-            data:{
-                name:user.username , 
-                email:user.email
-            } 
-         });
+        return res.status(200).json({
+            success: true,
+            message: "User Details Fetched",
+            data: {
+                name: user.username,
+                email: user.email
+            }
+        });
 
-    }catch(error){
+    } catch (error) {
 
-         console.error(error) ;
+        console.error(error);
 
         return res.status(500).json({
-            success:false,
-            message:"Internal Server Error"
+            success: false,
+            message: "Internal Server Error"
         });
     };
 
 };
 
+export async function VerifyOTP(req: Request, res: Response) {
+
+
+
+
+
+
+}
