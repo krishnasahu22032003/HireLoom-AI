@@ -1,0 +1,10 @@
+import crypto from "crypto" ;
+
+export default  function generaeteOtp(){
+
+const otp =  crypto.randomInt(100000 , 1000000).toString() ; 
+
+return otp  ;
+
+} ;
+
