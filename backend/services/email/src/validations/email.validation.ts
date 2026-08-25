@@ -9,7 +9,7 @@ export const WelcomeEmailSchema = z.object({
 });
 
 export const OtpEmailSchema = z.object({
-    type: z.literal("OTP_EMAIL"),
+    type: z.literal("SEND_OTP"),
     to: z.email(),
     data: z.object({
         name: z.string().min(1),

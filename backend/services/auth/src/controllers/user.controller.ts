@@ -33,12 +33,19 @@ export async function UserSignUp(req: Request, res: Response) {
             email
         });
 
-        if (checkUser && checkUser.isEmailVerified) {
+        if (checkUser) {
+            if (!checkUser.isEmailVerified) {
+                return res.status(409).json({
+                    success: false,
+                    message: "Email is registered but not verified. Please verify your email."
+                });
+            }
+
             return res.status(409).json({
                 success: false,
-                message: "Email already exists. Please use another email."
-            })
-        };
+                message: "Email already registered."
+            });
+        }
 
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
@@ -130,6 +137,13 @@ export async function UserSignIn(req: Request, res: Response) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid email or password"
+            });
+        };
+
+        if (!checkUser.isEmailVerified) {
+            return res.status(403).json({
+                success: false,
+                message: "Please verify your email before signing in"
             });
         };
 
