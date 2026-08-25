@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: false },
     firebaseId: { type: String, required: false, unique: true, sparse: true },
+    isEmailVerified:{type:Boolean , required:false },
     credits: { type: Number, default: 150 }
 
 
