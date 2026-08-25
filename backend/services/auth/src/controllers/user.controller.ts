@@ -7,6 +7,7 @@ import { generateToken } from "../lib/jwt.js";
 import { AUTH_COOKIE_NAME, AUTH_COOKIE_OPTIONS } from "../config/cookie.js";
 import generaeteOtp from "../lib/generateOtp.js";
 import redis from "../config/connectRedis.js";
+import { otpSchema } from "../validation/otpValidation.js";
 
 // 1. signup 2. login 3. logout using jwt these i want 
 
@@ -237,9 +238,100 @@ export async function GetUserDetails(req: Request, res: Response) {
 
 export async function VerifyOTP(req: Request, res: Response) {
 
+    const parsedData = otpSchema.safeParse(req.body);
+
+    if (!parsedData.success) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid Credentials",
+            error: parsedData.error.flatten()
+        });
+    };
+
+    const { email, otp } = parsedData.data;
+
+    try {
+
+        const userOtp = await redis.get(`otp:${email}`); //This is the otp that is in the redis db. 
+
+        if (!userOtp) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Otp is not present"
+            });
+        };
+
+        const compareOtp = await bcrypt.compare(otp, userOtp)
+
+        if (!compareOtp) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Invalid Otp"
+            });
+        };
 
 
 
+        const updateUser = await User.findOneAndUpdate(
+            {
+                email,
+                isEmailVerified: false
+            },
+
+            {
+                $set: {
+                    isEmailVerified: true
+                }
+            },
+            {
+                new: true
+            }
+
+        );
+
+        if (!updateUser) {
+            return res.status(400).json({
+                success: false,
+                message: "User Does not updated"
+            });
+        };
+
+        await redis.del(`otp:${email}`);
+
+        const emailResponse = await fetch(ENV_SECRETS.EMAIL_SERVICE_URL as string, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                type: "WELCOME_EMAIL",
+                to: updateUser.email,
+                data: {
+                    name: updateUser.username
+                }
+            })
+        });
 
 
-}
+        if (!emailResponse.ok) {
+            console.error(
+                `Welcome email service failed: ${emailResponse.status}`
+            );
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Email verified successfully"
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    };
+
+};
