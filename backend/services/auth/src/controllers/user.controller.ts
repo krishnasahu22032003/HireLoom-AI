@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import ENV_SECRETS from "../lib/Secrets.js";
 import { generateToken } from "../lib/jwt.js";
 import { AUTH_COOKIE_NAME, AUTH_COOKIE_OPTIONS } from "../config/cookie.js";
+import generaeteOtp from "../lib/generateOtp.js";
 
 // 1. signup 2. login 3. logout using jwt these i want 
 
@@ -42,7 +43,8 @@ export async function UserSignUp(req: Request, res: Response) {
         const user = await User.create({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            isEmailVerified:false
         });
 
         if (!user) {
@@ -52,23 +54,26 @@ export async function UserSignUp(req: Request, res: Response) {
             });
         };
 
-        await fetch(ENV_SECRETS.EMAIL_SERVICE_URL as string, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
+    const userOtp = generaeteOtp() ;
+
+        await fetch(ENV_SECRETS.OTP_SERVICE_URL as string , {
+            method:"POST", 
+            headers:{
+                "Content-Type":"application/json"
             },
-            body: JSON.stringify({
-                type: "WELCOME_EMAIL",
-                to: user.email,
-                data: {
-                    name: user.username
+            body:JSON.stringify({
+                type:"SEND_OTP",
+                to:user.email , 
+                data:{
+                    name:user.username , 
+                    otp:userOtp
                 }
             })
-        });
+        })
 
         return res.status(201).json({
             success: true,
-            message: "User Created Successfully",
+            message: "OTP Email Sent Successfully",
             data: {
                 username: user.username,
                 email: user.email
