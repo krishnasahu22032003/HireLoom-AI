@@ -22,6 +22,7 @@ if(error){
 
 return data ;
 };
+
 export async function sendOTPEmail(to : string , name :string , otp:string) {
 
 const {data , error} =   await resend.emails.send({

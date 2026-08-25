@@ -58,7 +58,7 @@ export async function OtpEmail(req:Request , res:Response){
 
 try{
 
-    const parsedData = OtpEmailSchema.safeParse(req.body);
+ const parsedData = OtpEmailSchema.safeParse(req.body);
 
  if(!parsedData.success){
     return res.status(400).json({

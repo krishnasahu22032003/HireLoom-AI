@@ -1,5 +1,5 @@
-import { Worker , Job } from "bullmq";
-import { sendEmail } from "../config/resendEmail.js";
+import { Worker  } from "bullmq";
+import { sendEmail, sendOTPEmail } from "../config/resendEmail.js";
 import redis from "../config/redis.js";
 
 
@@ -7,7 +7,8 @@ interface EmailJob{
 
     to  :string,
       data: {
-    name: string;
+    name: string,
+    otp?:string
   };
 };
 
@@ -18,8 +19,12 @@ const worker =  new Worker<EmailJob>("email-queue",async (job)=>{
     console.log("JOB RECIEVIED DATA" , job.data) ;
 
     if(job.name === "WELCOME_EMAIL"){
-        await   sendEmail(job.data.to , job.data.data.name)
+        await sendEmail(job.data.to , job.data.data.name)
     } ;
+
+    if(job.name === "SEND_OTP"){
+        await sendOTPEmail(job.data.to , job.data.data.name , job.data.data.otp as string) ;
+    }
 
 },{connection:redis}) ;
 
