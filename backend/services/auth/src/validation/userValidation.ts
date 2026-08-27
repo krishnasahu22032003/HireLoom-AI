@@ -45,6 +45,12 @@ export const signupSchema = z
     path: ["confirmPassword"],
   });
 
+
+// Only email schema 
+
+export const emailValidation = z.object({
+  email:emailSchema
+})
 // signin Schema
 export const signinSchema = z
   .object({

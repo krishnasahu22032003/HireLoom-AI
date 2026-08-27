@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import User from "../models/user.model.js";
-import { signinSchema, signupSchema } from "../validation/userValidation.js";
+import { emailSchema, emailValidation, signinSchema, signupSchema } from "../validation/userValidation.js";
 import bcrypt from "bcrypt";
 import ENV_SECRETS from "../lib/Secrets.js";
 import { generateToken } from "../lib/jwt.js";
@@ -349,3 +349,29 @@ export async function VerifyOTP(req: Request, res: Response) {
     };
 
 };
+
+
+export async function ResendOtp(req:Request , res: Response){
+
+
+const parsedData  = emailValidation.safeParse(req.body) ;
+
+if(!parsedData.success){
+ 
+ return res.status(400).json({
+    success:false, 
+    message:"Invalid Credentials" , 
+    error:parsedData.error.flatten()
+ }) ;
+
+} ;
+
+
+const { email } = parsedData.data ; 
+
+
+ 
+
+
+
+}
