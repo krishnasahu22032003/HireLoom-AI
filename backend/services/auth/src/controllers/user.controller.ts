@@ -1,13 +1,13 @@
 import type { Request, Response } from "express";
 import User from "../models/user.model.js";
-import { emailSchema, emailValidation, signinSchema, signupSchema } from "../validation/userValidation.js";
+import { emailValidation, signinSchema, signupSchema } from "../validation/userValidation.js";
 import bcrypt from "bcrypt";
 import ENV_SECRETS from "../lib/Secrets.js";
 import { generateToken } from "../lib/jwt.js";
 import { AUTH_COOKIE_NAME, AUTH_COOKIE_OPTIONS } from "../config/cookie.js";
-import generaeteOtp from "../lib/generateOtp.js";
 import redis from "../config/connectRedis.js";
 import { otpSchema } from "../validation/otpValidation.js";
+import generateOtp from "../lib/generateOtp.js";
 
 // 1. signup 2. login 3. logout using jwt these i want 
 
@@ -63,7 +63,7 @@ export async function UserSignUp(req: Request, res: Response) {
             });
         };
 
-        const userOtp = generaeteOtp();
+        const userOtp = generateOtp();
         const otpHash = await bcrypt.hash(userOtp, SALT_ROUNDS);
 
         await redis.set(
@@ -351,27 +351,95 @@ export async function VerifyOTP(req: Request, res: Response) {
 };
 
 
-export async function ResendOtp(req:Request , res: Response){
+export async function ResendOtp(req: Request, res: Response) {
 
 
-const parsedData  = emailValidation.safeParse(req.body) ;
+    const parsedData = emailValidation.safeParse(req.body);
 
-if(!parsedData.success){
- 
- return res.status(400).json({
-    success:false, 
-    message:"Invalid Credentials" , 
-    error:parsedData.error.flatten()
- }) ;
+    if (!parsedData.success) {
 
-} ;
+        return res.status(400).json({
+            success: false,
+            message: "Invalid Credentials",
+            error: parsedData.error.flatten()
+        });
 
-
-const { email } = parsedData.data ; 
+    };
 
 
- 
+    const { email } = parsedData.data;
 
+    try {
 
+        const checkUser = await User.findOne({
+            email
+        });
 
-}
+        if (!checkUser) {
+
+            return res.status(400).json({
+                success: false,
+                message: "If the account exists and is not verified, an OTP has been sent."
+            });
+
+        };
+
+        if (checkUser.isEmailVerified) {
+
+            return res.status(400).json({
+                success: false,
+                message: "Otp already verified"
+            });
+        };
+
+        await redis.del(`otp:${checkUser.email}`)
+
+        const userOtp = generateOtp();
+        const hashedOtp = await bcrypt.hash(userOtp, SALT_ROUNDS);
+
+        await redis.set(
+
+            `otp:${checkUser.email}`,
+            hashedOtp,
+            "EX", 300
+
+        );
+
+        const resendOtpEmail = await fetch(ENV_SECRETS.OTP_SERVICE_URL as string, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                type: "SEND_OTP",
+                to: checkUser.email,
+                data: {
+                    name: checkUser.username,
+                    otp: userOtp
+                }
+            })
+        });
+
+        if (!resendOtpEmail.ok) {
+            throw new Error(
+                `OTP service failed: ${resendOtpEmail.status}`
+            );
+        };
+
+        return res.status(200).json({
+            success: true,
+            message: "OTP Email Sent Successfully",
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+        });
+
+    };
+
+};
