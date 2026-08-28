@@ -12,7 +12,13 @@ const ThemeContext = createContext<ThemeContextType | null>(null);
 
 export const useThemeContext = () => {
 
-  return useContext(ThemeContext);
+  const context =  useContext(ThemeContext);
+
+  if(!context){
+    throw new Error("Context does  not exists");
+  } ;
+
+  return context ; 
 
 };
 
@@ -22,13 +28,13 @@ export const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
 
   const ToggleDarkMode = () => {
 
-    setDarkMode(!darkMode);
+    setDarkMode((prev)=> !prev);
 
   };
 
   useEffect(() => {
 
-    document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
+    document.documentElement.classList.toggle("dark", darkMode);
 
   }, [darkMode]);
 
