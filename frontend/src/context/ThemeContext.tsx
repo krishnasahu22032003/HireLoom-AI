@@ -2,44 +2,42 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 type ThemeContextType = {
 
-ToggleDarkMode:()=>void , 
-darkMode:boolean
+  ToggleDarkMode: () => void,
+  darkMode: boolean
 
-}
+};
 
 
-const ThemeContext = createContext<ThemeContextType | null>(null) ; 
+const ThemeContext = createContext<ThemeContextType | null>(null);
 
-export  const useTheme  = ()=>{
+export const useThemeContext = () => {
 
-  return useContext(ThemeContext) ; 
+  return useContext(ThemeContext);
 
-} ; 
+};
 
-const ThemeContextFunction = ({children} : {children : ReactNode}) => {
+export const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
 
-  const [darkMode , setDarkMode] = useState(false) ;
+  const [darkMode, setDarkMode] = useState(false);
 
-  const ToggleDarkMode = ()=>{
+  const ToggleDarkMode = () => {
 
     setDarkMode(!darkMode);
-    
-  }
- 
-  useEffect(()=>{
 
-    document.documentElement.setAttribute("data-theme" , darkMode ? "dark" : "light") ;
+  };
 
-  },[darkMode]) ;
+  useEffect(() => {
+
+    document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
+
+  }, [darkMode]);
 
   return (
-   
-<ThemeContext.Provider value={{ToggleDarkMode , darkMode}}>
-   {children}
-</ThemeContext.Provider>
 
+    <ThemeContext.Provider value={{ ToggleDarkMode, darkMode }}>
+      {children}
+    </ThemeContext.Provider>
 
   )
-}
 
-export default ThemeContextFunction
+}; 
