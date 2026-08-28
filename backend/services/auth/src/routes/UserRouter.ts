@@ -1,5 +1,5 @@
 import express from "express" ; 
-import { GetUserDetails, UserSignIn, UserSignOut, UserSignUp, VerifyOTP } from "../controllers/user.controller.js";
+import { GetUserDetails, ResendOtp, UserSignIn, UserSignOut, UserSignUp, VerifyOTP } from "../controllers/user.controller.js";
 
 const UserRouter = express.Router() ; 
 
@@ -8,6 +8,7 @@ UserRouter.post( "/signin", UserSignIn) ;
 UserRouter.post( "/signout", UserSignOut) ;
 UserRouter.get( "/me", GetUserDetails) ;
 UserRouter.post( "/verify-otp", VerifyOTP) ;
+UserRouter.post( "/resend-otp", ResendOtp) ;
 
 
 export default UserRouter ; 
