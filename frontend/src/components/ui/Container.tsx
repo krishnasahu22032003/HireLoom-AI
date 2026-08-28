@@ -5,14 +5,14 @@ import cn from "../../lib/utils"
 type ContainerProps = {
 
     children : React.ReactNode , 
-    classname:string
+    classname?:string
 } ; 
 
 const Container = ({children , classname} : ContainerProps) => {
     
   return (
     <div className={cn(
-        "mx-auto mx-w-2xl 2-full px-4 sm:px-6 lg:px-8",
+        "mx-auto max-w-4xl w-full px-4 sm:px-6 lg:px-8",
         classname
     )}>
         {children}

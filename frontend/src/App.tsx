@@ -1,13 +1,13 @@
 import ToggleThemeButton from "./components/ui/ToggleThemeButton"
+import LandingPage from "./pages/landingPage"
 
 function App() {
 
   return (
     <>
-     <div className="dark:bg-amber-400 bg-green-300 min-h-screen">
-      Hello world
-      <ToggleThemeButton/>
-     </div>
+      <div >
+        <LandingPage />
+      </div>
     </>
   )
 }
