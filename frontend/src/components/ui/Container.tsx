@@ -12,7 +12,7 @@ const Container = ({children , classname} : ContainerProps) => {
     
   return (
     <div className={cn(
-        "mx-auto max-w-4xl w-full px-4 sm:px-6 lg:px-8",
+        "mx-auto max-w-6xl w-full px-4 sm:px-6 lg:px-8",
         classname
     )}>
         {children}

@@ -12,7 +12,7 @@ const ToggleThemeButton = (props: Props) => {
       onClick={ToggleDarkMode}
       aria-label="Toggle theme"
       className={cn(
-        "group relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full cursor-pointer",
+        "group relative flex h-8 w-8 items-center justify-center overflow-hidden rounded-full cursor-pointer",
         "border border-gray-300 dark:border-gray-700",
         "bg-white dark:bg-gray-900",
         "transition-all duration-300 ease-out",
@@ -32,7 +32,7 @@ const ToggleThemeButton = (props: Props) => {
       />
       <Sun
         className={cn(
-          "absolute h-5 w-5 text-amber-500",
+          "absolute h-4 w-4 text-amber-500",
           "transition-all duration-500 ease-in-out",
           "group-hover:rotate-45",
           darkMode ? "scale-0 -rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"
@@ -40,7 +40,7 @@ const ToggleThemeButton = (props: Props) => {
       />
       <Moon
         className={cn(
-          "absolute h-5 w-5 text-indigo-400",
+          "absolute h-4 w-4 text-indigo-400",
           "transition-all duration-500 ease-in-out",
           "group-hover:-rotate-12",
           darkMode ? "scale-100 rotate-0 opacity-100" : "scale-0 rotate-90 opacity-0"
