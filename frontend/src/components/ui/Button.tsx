@@ -26,7 +26,7 @@ const baseStyles =
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    "text-white bg-gradient-to-b from-blue-500 via-blue-600 to-blue-700 shadow-[0_1px_0_rgba(255,255,255,0.28)_inset,0_-2px_6px_rgba(0,0,0,0.28)_inset,0_8px_20px_-6px_rgba(47,107,250,0.55),0_2px_4px_rgba(6,12,28,0.4)] hover:shadow-[0_1px_0_rgba(255,255,255,0.32)_inset,0_-2px_6px_rgba(0,0,0,0.24)_inset,0_14px_28px_-8px_rgba(47,107,250,0.55),0_4px_10px_rgba(6,12,28,0.5)] hover:-translate-y-0.5",
+    "text-white bg-gradient-to-b from-blue-500 via-blue-500 to-blue-600 shadow-[0_1px_0_rgba(255,255,255,0.28)_inset,0_-2px_6px_rgba(0,0,0,0.28)_inset,0_8px_20px_-6px_rgba(47,107,250,0.55),0_2px_4px_rgba(6,12,28,0.4)] hover:shadow-[0_1px_0_rgba(255,255,255,0.32)_inset,0_-2px_6px_rgba(0,0,0,0.24)_inset,0_14px_28px_-8px_rgba(47,107,250,0.55),0_4px_10px_rgba(6,12,28,0.5)] hover:-translate-y-0.5",
   secondary:
     "text-white bg-white/5 shadow-[0_0_0_1.5px_rgba(255,255,255,0.14)_inset] hover:bg-white/10 hover:shadow-[0_0_0_1.5px_rgba(255,255,255,0.28)_inset,0_6px_16px_-4px_rgba(0,0,0,0.35)] hover:-translate-y-0.5",
   outline:

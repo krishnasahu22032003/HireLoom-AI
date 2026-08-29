@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import Button from "../ui/Button";
 import ToggleThemeButton from "../ui/ToggleThemeButton";
@@ -50,9 +48,9 @@ const Navbar = () => {
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        scrolled
-          ? "border-b border-gray-200 bg-white/80 shadow-sm shadow-gray-900/5 backdrop-blur-xl dark:border-gray-800 dark:bg-gray-950/80"
-          : "border-b border-transparent bg-white/70 backdrop-blur-md dark:bg-gray-950/70"
+       scrolled
+  ? "border-b border-black/5 bg-white/60 shadow-sm shadow-black/5 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/60 dark:shadow-black/20"
+  : "border-b border-transparent bg-transparent"
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
