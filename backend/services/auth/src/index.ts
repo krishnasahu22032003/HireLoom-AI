@@ -13,6 +13,3 @@ app.use("/user" ,UserRouter) ;
 app.use("/health" , HealthRouter) ; 
 
 startServer(app) ;
-
-
-
